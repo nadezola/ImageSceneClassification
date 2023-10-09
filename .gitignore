@@ -1,0 +1,9 @@
+# exclude everything
+.venv
+**/__pycache__
+data/*
+checkpoints/*
+results/*
+
+# exception to the rule
+!checkpoints/.gitkeep
