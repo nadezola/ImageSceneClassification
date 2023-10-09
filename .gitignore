@@ -7,4 +7,3 @@ results/*
 
 # exception to the rule
 !checkpoints/.gitkeep
-!data/splits/*

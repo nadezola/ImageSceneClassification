@@ -58,35 +58,6 @@ def make_split(data, phase, cls, scene_lbls, tsk):
     return cls_files
 
 
-def split_set(data, scene_lbls):
-    clear_hashes = weather_lbls.loc[weather_lbls['Weather'] == ('clear'), 'Hash'].values
-    fog_hashes = weather_lbls.loc[weather_lbls['Weather'] == ('fog'), 'Hash'].values
-    rain_hashes = weather_lbls.loc[weather_lbls['Weather'] == ('rain'), 'Hash'].values
-    snow_hashes = weather_lbls.loc[weather_lbls['Weather'] == ('snow'), 'Hash'].values
-
-    clear_files = []
-    fog_files = []
-    rain_files = []
-    snow_files = []
-    other_files = []
-
-    for f in data.values:
-        fhash = Path(f[0]).stem.split('_')[0]
-        fname = Path(f[0]).name
-        if fhash in clear_hashes:
-            clear_files.append(fname)
-        elif fhash in fog_hashes:
-            fog_files.append(fname)
-        elif fhash in rain_hashes:
-            rain_files.append(fname)
-        elif fhash in snow_hashes:
-            snow_files.append(fname)
-        else:
-            other_files.append(fname)
-
-    return clear_files, fog_files, rain_files, snow_files, other_files
-
-
 if __name__ == '__main__':
     args = parse_args()
     data_root = Path(args.data_root)
