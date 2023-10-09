@@ -140,14 +140,14 @@ python main.py --data_root <path/to/data/root/>
                # --novis option to DO NOT visualize classification results
 ```
 
-## Demo
+## Predict
 Play the Image Scene Classifier on test dataset. No labels needed.
 * Configure `opt.py` file
 * Put the weights of Scene Classification Head in `checkpoints` folder
 * Run:
 ```bash
 python main.py --data_root <path/to/data/root/> 
-               --mode 'demo'
+               --mode 'predict'
                --weights <path/to/scene/classification/weights>
                --res_dir <path/to/folder/where/to/save/results>
                # --novis option to DO NOT visualize classification results
