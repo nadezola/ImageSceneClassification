@@ -53,7 +53,8 @@ def make_split(data, phase, cls, scene_lbls, tsk):
         fhash = Path(f[0]).stem.split('_')[0]
         fname = Path(f[0]).name
         if fhash in cls_hashes:
-            cls_files.append(fname)
+            # cls_files.append(fname)
+            cls_files.append(str(f[0]))
 
     return cls_files
 
