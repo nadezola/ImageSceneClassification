@@ -36,6 +36,7 @@ def parse_args():
                         help='The column name with labels in scene_lbls file')
     parser.add_argument('--res_dir', action='store', default='data/splits',
                         help='Path to save split results')
+    parser.add_argument('-')
 
     args = parser.parse_args()
     return args
@@ -46,7 +47,7 @@ def make_split_dirs(res_root, classes):
         make_dir(res_root / cls)
 
 
-def make_split(data, phase, cls, scene_lbls, tsk):
+def make_split(data, cls, scene_lbls, tsk):
     cls_hashes = scene_lbls.loc[scene_lbls[tsk] == cls, 'hash'].values
     cls_files = []
     for f in data.values:
@@ -67,18 +68,20 @@ if __name__ == '__main__':
 
     train_txt = data_root/'train.txt'
     val_txt = data_root/'val.txt'
+    test_txt = data_root/'test.txt'
 
     train_split = pd.read_csv(train_txt, header=None)
     val_split = pd.read_csv(val_txt, header=None)
+    test_split = pd.read_csv(test_txt, header=None)
 
     scene_lbls = pd.read_csv(scene_lbl_file, sep=';')
 
     make_split_dirs(res_root, opt.CLS_SCENE)
 
-    for phase, data in zip(['train', 'val'], [train_split, val_split]):
+    for phase, data in zip(['train', 'val', 'test'], [train_split, val_split, test_split]):
         num_images_per_cls = np.zeros(len(opt.CLS_SCENE))
         for i, cls in enumerate(opt.CLS_SCENE):
-            cls_files = make_split(data, phase, cls, scene_lbls, args.tsk)
+            cls_files = make_split(data, cls, scene_lbls, args.tsk)
             num_images_per_cls[i] = len(cls_files)
             with open(res_root / cls / f'{phase}.txt', 'w') as f:
                 f.write('\n'.join(cls_files))
