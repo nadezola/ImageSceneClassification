@@ -4,6 +4,7 @@
 data/*
 checkpoints/*
 results/*
+outputs/*
 
 # exception to the rule
 !checkpoints/.gitkeep

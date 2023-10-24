@@ -1,7 +1,8 @@
 # Image Scene Classifier
 Image Scene Classification module from [DILAM paper](https://arxiv.org/abs/2305.18953) & [DILAM Github](https://github.com/jmiemirza/DILAM). 
 
-This machine learning approach uses the first two layers of [YOLOv3](https://github.com/ultralytics/yolov3) object detection model, 
+This machine learning approach uses the first two layers of [YOLOv3](https://github.com/ultralytics/yolov3) 
+(commit d353371) object detection model, 
 pre-trained on a one image scene dataset (e.g., clear weather condition), for further image classication of 
 different image scenes (e.g., adverse weather conditions).
 
@@ -118,7 +119,7 @@ python data_splitting.py --data_root <path/to/data_root>
 ## Train
 Train the Image Scene Classification Head
 * Configure `opt.py` file
-* Pre-train the YOLOv3 model on one image scene dataset (e.g., on clear weather condition) 
+* Pre-train the [YOLOv3](https://github.com/ultralytics/yolov3) model commit d353371 on one image scene dataset (e.g., on clear weather condition) 
 for your object detection task and put the pre-trained model in `checkpoints` folder
 * Run:
 ```bash

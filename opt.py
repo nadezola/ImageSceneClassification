@@ -10,7 +10,7 @@ obj_det_cls = ['Car', 'Van', 'Truck', 'Pedestrian', 'Person_sitting', 'Cyclist',
 # Scene Classification Head
 img_size = 640
 batch_size = 8
-CLS_SCENE = ['vienna', 'auckland', 'frankfurt', 'iceland', 'none', 'unknown']
+CLS_SCENE = ['clear', 'rain', 'snow', 'fog']
 epochs = 30
 augment = False
 workers = 2
