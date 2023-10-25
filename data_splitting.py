@@ -32,7 +32,7 @@ def parse_args():
     parser.add_argument('--data_root', action='store', default='data', help='Path to data root')
     parser.add_argument('--scene_lbls', action='store', default='data/scene_labels.csv',
                         help='Path to image scene labels')
-    parser.add_argument('--tsk', action='store', default='airport',
+    parser.add_argument('--tsk', action='store', default='weather',
                         help='The column name with labels in scene_lbls file')
     parser.add_argument('--res_dir', action='store', default='data/splits',
                         help='Path to save split results')
