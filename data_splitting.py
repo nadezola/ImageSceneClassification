@@ -36,7 +36,6 @@ def parse_args():
                         help='The column name with labels in scene_lbls file')
     parser.add_argument('--res_dir', action='store', default='data/splits',
                         help='Path to save split results')
-    parser.add_argument('-')
 
     args = parser.parse_args()
     return args
