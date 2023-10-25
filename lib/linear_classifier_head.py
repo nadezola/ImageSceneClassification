@@ -154,9 +154,10 @@ def evaluate(model, opt, data_root, res_dir, data_split, novis, fname_weights=''
 
             if not novis:
                 for img_name, pred, lbl in zip(img_names, batch_preds.tolist(), labels.tolist()):
-                    s = f'Prediction - {opt.CLS_SCENE[pred]} :: Label - {opt.CLS_SCENE[lbl]}'
+                    s = f'Pred - {opt.CLS_SCENE[pred]} :: Label - {opt.CLS_SCENE[lbl]}'
                     img = cv2.imread(str(Path(data_root) / 'images' / data_split / img_name))
-                    img = cv2.putText(img, text=s, org=(50, 50), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1,
+                    img = cv2.resize(img, (640, 640))
+                    img = cv2.putText(img, text=s, org=(20, 20), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1,
                                       color=(0, 0, 0), thickness=2)
                     cv2.imwrite(str(res_dir / 'vis' / img_name), img)
 
@@ -168,8 +169,10 @@ def evaluate(model, opt, data_root, res_dir, data_split, novis, fname_weights=''
     conf_matrix = metrics.confusion_matrix(y_true=gts, y_pred=predictions, normalize='pred')
     # res_eval_dic = metrics.classification_report(y_true=gts, y_pred=predictions, target_names=opt.CLS_SCENE,
     #                                            output_dict=True, zero_division=0.)
-    res_eval = metrics.classification_report(y_true=gts, y_pred=predictions, target_names=opt.CLS_SCENE,
-                                               output_dict=False, zero_division=0.)
+    # res_eval = metrics.classification_report(y_true=gts, y_pred=predictions, labels=[0, 1, 2, 3],
+    #                                          target_names=opt.CLS_SCENE, output_dict=False, zero_division=0.)
+    res_eval = metrics.classification_report(y_true=gts, y_pred=predictions,
+                                             target_names=opt.CLS_SCENE, output_dict=False, zero_division=0.)
 
     # Report
     log.info(f':: Acc={acc * 100:.1f} :: Loss={loss:.2f}')
@@ -188,6 +191,7 @@ def evaluate(model, opt, data_root, res_dir, data_split, novis, fname_weights=''
         print(f'Confusion Matrix:\n{conf_matrix}', file=f)
 
     # Plot Confusion matrix
+    # metrics.ConfusionMatrixDisplay(conf_matrix, display_labels=['vienna', 'auckland', 'iceland']).plot(cmap='Blues')
     metrics.ConfusionMatrixDisplay(conf_matrix, display_labels=opt.CLS_SCENE).plot(cmap='Blues')
     plt.savefig(Path(res_dir) / 'confusion_matrix.png')
 
