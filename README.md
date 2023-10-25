@@ -119,7 +119,7 @@ python data_splitting.py --data_root <path/to/data_root>
 ## Train
 Train the Image Scene Classification Head
 * Configure `opt.py` file
-* Pre-train the [YOLOv3](https://github.com/ultralytics/yolov3) model commit d353371 on one image scene dataset (e.g., on clear weather condition) 
+* Pre-train the [YOLOv3](https://github.com/ultralytics/yolov3) model (commit d353371) on one image scene dataset (e.g., on clear weather condition) 
 for your object detection task and put the pre-trained model in `checkpoints` folder
 * Run:
 ```bash
