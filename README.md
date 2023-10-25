@@ -4,7 +4,9 @@ Image Scene Classification module from [DILAM paper](https://arxiv.org/abs/2305.
 This machine learning approach uses the first two layers of [YOLOv3](https://github.com/ultralytics/yolov3) 
 (commit d353371) object detection model, 
 pre-trained on a one image scene dataset (e.g., clear weather condition), for further image classication of 
-different image scenes (e.g., adverse weather conditions).
+different image scenes (e.g., adverse weather conditions). 
+
+_Note: The code is built on DILAM, which only works for 4 different image scene classes_  
 
 ![](docs/DILAM_WeatherClassifier.jpg "DILAM")
 
@@ -53,7 +55,13 @@ data_root
 |      |      ├─── train.txt
 |      |      └─── val.txt
 |      |
-|      ├──── ...
+|      ├──── scene_3
+|      |      ├─── train.txt
+|      |      └─── val.txt
+|      |
+|      └──── scene_4
+|             ├─── train.txt
+|             └─── val.txt
 |
 ├── test.txt
 ├── train.txt
@@ -62,7 +70,7 @@ data_root
 └── scene_labels.csv 
 ```
 * `test.txt`, `train.txt`, `val.txt` contain a list of images defining the train/val/test splits.
-*  `scene_1`, `scene_2`, ... - scene names should match class names `CLS_SCENE` in file `opt.py`
+*  `scene_1`, `scene_2`, `scene_3`, `scene_4` - scene names should match class names `CLS_SCENE` in file `opt.py`
 
 ### Splitting by Image Scene:
 * To train the Image Scene Classifier, for example, for 4 adverse weather conditions:
