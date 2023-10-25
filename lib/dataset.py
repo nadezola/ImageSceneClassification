@@ -57,7 +57,8 @@ class ImageDataset(Dataset):
                 if not p.is_file():
                     raise Exception(f'{p} does not exist or is not a file')
                 with open(p, 'r') as f:
-                    fnames = [Path(data_root) / 'images' / split / line.strip() for line in f]
+                    # fnames = [Path(data_root) / 'images' / split / line.strip() for line in f]
+                    fnames = [Path(data_root) / line.strip() for line in f]
                     self.img_files.extend(fnames)
                     self.labels.extend([l] * len(fnames))
                 assert self.img_files, 'No images found'

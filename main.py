@@ -1,6 +1,6 @@
 """
-Weather classification module.
-Uses first two layers of pre-trained YOLOv3 object detection model.
+Image scene classification module.
+Uses first two layers of pre-trained YOLOv3 object detection model (commit d353371).
 """
 
 import argparse
@@ -25,11 +25,11 @@ def parse_args():
     parser.add_argument('--data_root', default='data', help='Path to data root')
     parser.add_argument('--mode', default='predict', choices=['train', 'eval', 'predict'],
                         help='Running mode')
-    parser.add_argument('--weights', default='checkpoints/CLS_WEATHER_head_weights.pt',
-                        help='Weather classification weights (refers to the evaluation and predict modes')
+    parser.add_argument('--weights', default='checkpoints/CLS_SCENE_head_weights.pt',
+                        help='Image scene classification weights (refers to the evaluation and predict modes')
     parser.add_argument('--res_dir', default='results', help='Path to result directory')
     parser.add_argument('--novis', action='store_true',
-                        help='Do not visualize weather classification results (refers to the evaluation and predict modes)')
+                        help='Do not visualize image scene classification results (refers to the evaluation and predict modes)')
 
     args = parser.parse_args()
     return args

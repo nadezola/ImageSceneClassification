@@ -30,7 +30,7 @@ def validate(model, opt, dataset):
                                                   unit=' batch')):
         with torch.no_grad():
             imgs, labels = imgs.to(device).float()/255, labels.to(device)
-            outputs = model.forward_cls(imgs).view([-1, len(opt.CLS_WEATHER)])
+            outputs = model.forward_cls(imgs).view([-1, len(opt.CLS_SCENE)])
             targets = torch.zeros_like(outputs)
             for i, lbl in enumerate(labels):
                 targets[i, lbl] = 1
@@ -48,7 +48,7 @@ def validate(model, opt, dataset):
 
 
 def train(model, opt, data_root, res_dir,
-                   fname_weights='CLS_WEATHER_head_weights.pt', fname_eval='train_evaluation.txt'):
+                   fname_weights='CLS_SCENE_head_weights.pt', fname_eval='train_evaluation.txt'):
     start_time = datetime.now()
 
     train_dataset = get_dataloader(opt, data_root, split='train', shuffle=True)
@@ -84,7 +84,7 @@ def train(model, opt, data_root, res_dir,
                                                                     unit=' batch')):
             optimizer.zero_grad()
             imgs = imgs.to(device).float() / 255.0
-            out = model.forward_cls(imgs).view([-1, len(opt.CLS_WEATHER)])
+            out = model.forward_cls(imgs).view([-1, len(opt.CLS_SCENE)])
             targets = torch.zeros_like(out)
             for i, lbl in enumerate(labels):
                 targets[i, lbl] = 1
@@ -116,7 +116,7 @@ def train(model, opt, data_root, res_dir,
         print(f'Epochs = {opt.epochs}', file=f)
         print(f'Batch size = {opt.batch_size}', file=f)
         print(f'Image size = {opt.img_size}', file=f)
-        print(f'Classes = {opt.CLS_WEATHER}', file=f)
+        print(f'Classes = {opt.CLS_SCENE}', file=f)
         print(f'Pretrained Detection Model = {opt.obj_det_clear_pretrained_model}\n'
               f'  for {opt.obj_det_numcls} Object Classes = {opt.obj_det_cls}', file=f)
         print(f'Augment = {opt.augment}', file=f)
@@ -142,7 +142,7 @@ def evaluate(model, opt, data_root, res_dir, data_split, novis, fname_weights=''
                                                              unit=' batch')):
         with torch.no_grad():
             imgs, labels = imgs.to(device).float() / 255, labels.to(device)
-            outputs = model.forward_cls(imgs).view([-1, len(opt.CLS_WEATHER)])
+            outputs = model.forward_cls(imgs).view([-1, len(opt.CLS_SCENE)])
             targets = torch.zeros_like(outputs)
             for i, lbl in enumerate(labels):
                 targets[i, lbl] = 1
@@ -154,7 +154,7 @@ def evaluate(model, opt, data_root, res_dir, data_split, novis, fname_weights=''
 
             if not novis:
                 for img_name, pred, lbl in zip(img_names, batch_preds.tolist(), labels.tolist()):
-                    s = f'Prediction - {opt.CLS_WEATHER[pred]} :: Label - {opt.CLS_WEATHER[lbl]}'
+                    s = f'Prediction - {opt.CLS_SCENE[pred]} :: Label - {opt.CLS_SCENE[lbl]}'
                     img = cv2.imread(str(Path(data_root) / 'images' / data_split / img_name))
                     img = cv2.putText(img, text=s, org=(50, 50), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1,
                                       color=(0, 0, 0), thickness=2)
@@ -166,9 +166,9 @@ def evaluate(model, opt, data_root, res_dir, data_split, novis, fname_weights=''
     acc = metrics.accuracy_score(y_true=gts, y_pred=predictions)
     loss = mean(loss_values)
     conf_matrix = metrics.confusion_matrix(y_true=gts, y_pred=predictions, normalize='pred')
-    # res_eval_dic = metrics.classification_report(y_true=gts, y_pred=predictions, target_names=opt.CLS_WEATHER,
+    # res_eval_dic = metrics.classification_report(y_true=gts, y_pred=predictions, target_names=opt.CLS_SCENE,
     #                                            output_dict=True, zero_division=0.)
-    res_eval = metrics.classification_report(y_true=gts, y_pred=predictions, target_names=opt.CLS_WEATHER,
+    res_eval = metrics.classification_report(y_true=gts, y_pred=predictions, target_names=opt.CLS_SCENE,
                                                output_dict=False, zero_division=0.)
 
     # Report
@@ -177,7 +177,7 @@ def evaluate(model, opt, data_root, res_dir, data_split, novis, fname_weights=''
     log.info(f'Confusion Matrix:\n{conf_matrix}')
     with open(Path(res_dir) / fname_eval, 'w') as f:
         print(f'Mode Evaluation\n', file=f)
-        print(f'Classes = {opt.CLS_WEATHER}', file=f)
+        print(f'Classes = {opt.CLS_SCENE}', file=f)
         print(f'Weights for the Classification Head = {fname_weights}', file=f)
         print(f'Pretrained Detection Model = {opt.obj_det_clear_pretrained_model}\n'
               f'  for {opt.obj_det_numcls} Object Classes = {opt.obj_det_cls}', file=f)
@@ -188,7 +188,7 @@ def evaluate(model, opt, data_root, res_dir, data_split, novis, fname_weights=''
         print(f'Confusion Matrix:\n{conf_matrix}', file=f)
 
     # Plot Confusion matrix
-    metrics.ConfusionMatrixDisplay(conf_matrix, display_labels=opt.CLS_WEATHER).plot(cmap='Blues')
+    metrics.ConfusionMatrixDisplay(conf_matrix, display_labels=opt.CLS_SCENE).plot(cmap='Blues')
     plt.savefig(Path(res_dir) / 'confusion_matrix.png')
 
 def predict(model, opt, data_root, res_dir, data_split, novis):
@@ -201,11 +201,11 @@ def predict(model, opt, data_root, res_dir, data_split, novis):
     for batch_idx, (imgs, _, img_names) in tqdm(enumerate(test_dataset), desc=f'Test', total=len(test_dataset), unit=' batch'):
         with torch.no_grad():
             imgs = imgs.to(device).float()/255
-            outputs = model.forward_cls(imgs).view([-1, len(opt.CLS_WEATHER)])
+            outputs = model.forward_cls(imgs).view([-1, len(opt.CLS_SCENE)])
             _, batch_preds = outputs.max(1)
             if not novis:
                 for img_name, pred in zip(img_names, batch_preds.tolist()):
-                    s = f'Prediction - {opt.CLS_WEATHER[pred]} '
+                    s = f'Prediction - {opt.CLS_SCENE[pred]} '
                     img = cv2.imread(str(Path(data_root) / 'images' / 'test' / img_name))
                     img = cv2.putText(img, text=s, org=(50, 50), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1,
                                       color=(0, 0, 0), thickness=2)
