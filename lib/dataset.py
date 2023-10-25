@@ -42,7 +42,7 @@ def letterbox(img, new_shape=(640, 640), color=(114, 114, 114), auto=True, scale
 class ImageDataset(Dataset):
     def __init__(self, opt, data_root, split, phase):
         self.img_size = opt.img_size
-        self.CLS_WEATHER = opt.CLS_WEATHER
+        self.CLS_SCENE = opt.CLS_SCENE
         self.augment = opt.augment
         self.phase = phase
         self.img_files = []
@@ -52,8 +52,8 @@ class ImageDataset(Dataset):
             p = Path(data_root) / 'images' / split
             self.img_files = sorted(list(p.glob('*')))
         else:
-            for l in range(len(self.CLS_WEATHER)):
-                p = Path(data_root) / 'splits' / self.CLS_WEATHER[l] / f'{split}.txt'
+            for l in range(len(self.CLS_SCENE)):
+                p = Path(data_root) / 'splits' / self.CLS_SCENE[l] / f'{split}.txt'
                 if not p.is_file():
                     raise Exception(f'{p} does not exist or is not a file')
                 with open(p, 'r') as f:
